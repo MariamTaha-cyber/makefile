@@ -20,7 +20,7 @@ DEPS := $(SRC_FILES:.c=.d)
 DEP = $(join $(DEP_PATH), $(notdir $(DEPS))) 
 
 #variable for all files needed to be deleted
-CLEAN_TARGET = $(LINK_TARGET) $(OBJ) $(DEP)
+CLEAN_TARGET = $(DEP)
 
 #include dependencies to check them before build 
 -include $(DEP)
