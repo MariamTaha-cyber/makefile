@@ -15,15 +15,11 @@ SRC_FILES = $(wildcard src/*.c)
 OBJ := $(SRC_FILES:.c=.o)
 DEPS := $(SRC_FILES:.c=.d) 
 
-#change path for dependencies
-DEP = $(addprefix $(DEP_PATH)\,$(DEPS))
-
-
 #variable for all files needed to be deleted
-CLEAN_TARGET = $(LINK_TARGET) $(OBJ) $(DEP)
+CLEAN_TARGET = $(LINK_TARGET) $(OBJ) 
 
 #include dependencies to check them before build 
--include $(DEP)
+-include $(DEPS)
 
 #start building the project
 all:$(LINK_TARGET)
