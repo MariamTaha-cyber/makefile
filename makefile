@@ -12,18 +12,18 @@ INCLUDE_PATH = ./inc
 DEP_PATH = ./Deps/
 
 #include all files automaticlly 
-SRC_FILES = $(wildcard src/*.c)
+SRC_FILES = $(subst $(SRC_PATH)/,,$(wildcard $(SRC_PATH)/*.c))
 OBJ := $(SRC_FILES:.c=.o)
-DEPS := $(SRC_FILES:.c=.d)
+DEPS := $(wildcard $(DEP_PATH)/*.d)
  
 #change path for dependencies
-DEP = $(join $(DEP_PATH), $(notdir $(DEPS))) 
+#DEP = $(join $(DEP_PATH), $(notdir $(DEPS))) 
 
 #variable for all files needed to be deleted
-CLEAN_TARGET = $(DEP)
+CLEAN_TARGET = $(DEPS) $(OBJ) $(LINK_TARGET)
 
 #include dependencies to check them before build 
--include $(DEP)
+-include $(DEPS)
 
 #start building the project
 all:$(LINK_TARGET)
@@ -39,11 +39,8 @@ $(LINK_TARGET): $(OBJ) Mariam.o
 	$(CC) $(OBJ) Mariam.o -o $@
 	echo Linking done !
 
-#generate dependencies automaticlly
-%.d : %.c
-	$(CC) -MM -I$(INCLUDE_PATH) $< > $(DEP_PATH)\$*.d
-	
 #generate object automaticlly	
 %.o : %.c
 	$(CC) -c -I$(INCLUDE_PATH) $< -o $@
+	$(CC) -MM -I$(INCLUDE_PATH) $< > $(DEP_PATH)/$*.d
 
